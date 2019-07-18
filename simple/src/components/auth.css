@@ -1,0 +1,26 @@
+.Auth {
+    margin: 20px auto;
+    width: 50%!important;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.formdesign{
+    display:flex;
+   justify-content: center;
+   flex-direction: column;
+    width:30%!important;
+    margin: auto;
+    box-shadow:2px 2px 2px 2px black;
+    padding:20px
+
+}
+
+@media (min-width: 600px) {
+    .Auth {
+        width: 500px;
+    }
+}
