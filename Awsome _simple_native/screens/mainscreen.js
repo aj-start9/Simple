@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput, AsyncStorage } from 'react-native';
 import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation'; // Version can be specified in package.json
 import firebase from 'react-native-firebase';
 
@@ -20,8 +20,10 @@ class HomeScreen extends React.Component {
     title: 'Welcome',
   };
   componentDidMount() {
-    console.log(firebase.auth().currentUser.getIdToken)
 
+    
+    this.getdata();
+    this.getdata1(); 
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user.toJSON() });
@@ -39,6 +41,29 @@ class HomeScreen extends React.Component {
     });
   }
 
+  getdata = async () => {
+    try {
+      const value = await AsyncStorage.getItem('orderkey')
+      if (value !== null) {
+        console.log(value)
+      }
+    } catch (e) {
+      // error reading value
+    }
+  }
+
+  getdata1 = async () => {
+    try {
+      const value = await AsyncStorage.getItem('orderkey1')
+      if (value !== null) {
+        console.log(value)
+      }
+    } catch (e) {
+      // error reading value
+    }
+  }
+
+
   componentWillUnmount() {
     if (this.unsubscribe) this.unsubscribe();
   }
@@ -48,10 +73,10 @@ class HomeScreen extends React.Component {
     this.setState({ message: 'Sending code ...' });
 
     firebase.auth().signInWithPhoneNumber(phoneNumber)
-      .then(confirmResult => 
-        console.log(confirmResult)
-        // this.setState({ confirmResult, message: 'Code has been sent!' })
-        )  ///for only current user mobile only
+      .then(confirmResult =>
+        // console.log(confirmResult)
+        this.setState({ confirmResult, message: 'Code has been sent!' })
+      )  ///for only current user mobile only
       .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` })
       );
   };

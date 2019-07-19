@@ -11,6 +11,8 @@ import { Redirect } from 'react-router-dom'
 
 
 
+
+
 class Order extends Component {
     constructor(props) {
         super(props)
@@ -25,7 +27,7 @@ class Order extends Component {
         this.itemsRef.on('value', data => {
             const fetchedorders = [];
             console.log(data.val());
-            console.log(data.val()['-LjzhjgJJr1-YbIeAzon']['medicineList'])
+            // console.log(data.val()['-LjzhjgJJr1-YbIeAzon']['medicineList'])
             for (let key in data.val()) {
                 fetchedorders.push({
                     ...data.val()[key],
@@ -141,6 +143,7 @@ class Order extends Component {
                     <td scope="row">{order.name}</td>
                     <td>{order.userid}</td>
                     <td><a href={order.image} target="_blank">Image</a></td>
+                    <td>{order.isConfirm}</td>
                     <td>
                         <button class="btn btn-danger" type="submit" onClick={e => this.removeorders(e, order)}>Delete</button>
                         {/* <button class="btn btn-danger" style={{ marginLeft: "10px" }} type="submit" onClick={e => this.removeorders(e, order)}>List</button> */}
@@ -198,6 +201,7 @@ class Order extends Component {
                             <th class="td1" scope="col">Name</th>
                             <th class="td2" scope="col">UserId</th>
                             <th class="td3" scope="col">Prescription</th>
+                            <th>Confirm</th>
                             <th class="td4" scope="col">Delete</th>
                         </tr>
                     </thead>

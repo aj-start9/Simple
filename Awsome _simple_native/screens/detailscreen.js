@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Button, StyleSheet, ActivityIndicator, TextInput, Text } from "react-native";
+import { View, Image, Button, StyleSheet, ActivityIndicator, TextInput, Text, AsyncStorage } from "react-native";
 import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation'; // Version can be specified in package.json
 import Imagename from "./../assets/beautiful-place.jpg";
 import ImagePicker from 'react-native-image-picker';
@@ -20,22 +20,29 @@ class DetailsScreen extends React.Component {
       isAvailable: null,
       orderkey: '',
       orders: [],
-      singleuser: []
+      medicineList: null
     }
     this.itemsRef = firebase1.database().ref('users/');
     this.itemsRef.on('value', data => {
       const orderkey = this.state.orderkey
+      console.log(orderkey)
       console.log(data.val())
-      console.log(data.val()['-Ljzlu3nmeJbJWJM8yPT']['isAvailable'])
-      // const isAvailable = data.val()[orderkey]
-      // console.log(data.val()[orderkey]);
-      // console.log(orderkey)
-      // this.state.singleuser.push({
-      //   ...isAvailable,
-      //   id: orderkey
-      // })
-      // console.log(this.state.singleuser)
+      console.log(data.val()['-Lk3oTuV61rzwtjvzdUy']['medicineList'])
+      if (this.state.orderkey !== '') {
+        console.log(data.val()[orderkey]['isAvailable'])
+        if (data.val()[orderkey]['isAvailable'] !== undefined) {
+          this.setState({ isAvailable: data.val()[orderkey]['isAvailable'] })
+        }
+        else {
+          this.setState({ isAvailable: null })
+        }
 
+        let medicineList = data.val()[orderkey]['medicineList']
+        console.log(medicineList)
+        if (medicineList !== undefined) {
+          this.setState({ medicineList: medicineList, isAvailable: null })
+        }
+      }
     })
   }
 
@@ -68,6 +75,25 @@ class DetailsScreen extends React.Component {
     this.setState({ name: value })
   }
 
+
+  confirmHandler = () => {
+    const data = {
+      isConfirm: 'confirm'
+    }
+    return axios.patch('https://simple-30744.firebaseio.com/users/' + this.state.orderkey + '.json', data)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => console.log(err))
+  }
+
+  cancelHandler = () => {
+    const data = {
+      isConfirm: 'cancel'
+    }
+    return axios.patch('https://simple-30744.firebaseio.com/users/' + this.state.orderkey + '.json', data)
+  }
+
   sendImageHandler = () => {
     this.setState({ showdata: false })
 
@@ -91,22 +117,33 @@ class DetailsScreen extends React.Component {
           .then(parsedRes => {
             console.log(parsedRes)
             console.log(parsedRes.data.name)
+            const orderkey = parsedRes.data.name;
+            //asynchrose storage
+            AsyncStorage.setItem("orderkey", orderkey);
+            AsyncStorage.setItem("orderkey1", 'hzgsvdgsfv');
+            //asynchrose storage
+
             this.setState({ showdata: true, orderkey: parsedRes.data.name })
             return axios.get('https://simple-30744.firebaseio.com/users/' + parsedRes.data.name + '.json')
               .then(res =>
-                this.setState({ isAvailable: res.data.isAvailable })
+                console.log(res)
               )
               .catch(err => console.log(err))
           })
           .catch(err => console.log(err))
 
       })
-
-
-
   }
   render() {
     let show = <ActivityIndicator />
+    let confirm = <View>
+      <Button onPress={this.confirmHandler} title="Confirm" />
+      <View style={styles.btnmargin}>
+        <Button onPress={this.cancelHandler} title="Cancel" />
+
+      </View>
+      <Text>After confirmation you will receive a Bill</Text>
+    </View >
 
     if (this.state.showdata) {
       show = <Button title="Send to Store" onPress={this.sendImageHandler} />
@@ -121,12 +158,22 @@ class DetailsScreen extends React.Component {
           <TextInput placeholder="Patient Name" value={this.state.name} onChangeText={this.nameChangeHandler} />
 
         </View>
-        {this.state.singleuser.isAvailable}
         {show}
-        <Button
-          title="Go to Details"
-          onPress={() => this.props.navigation.navigate('MoreDetailsScreen')}
-        />
+        <View style={styles.btnmargin}>
+          {(this.state.medicineList !== null ?
+            <Button
+              title="Go to Bill" medicinelist={this.state.orderkey}
+              onPress={() => this.props.navigation.navigate('MoreDetailsScreen', {
+                orderkey: this.state.orderkey
+              })}
+            /> : null)}
+        </View>
+
+        <Text>
+          {this.state.isAvailable}
+        </Text>
+        {(this.state.isAvailable === null) ? null : confirm}
+
       </View>
     );
   }
@@ -150,6 +197,9 @@ const styles = StyleSheet.create({
   previewImage: {
     width: "100%",
     height: "100%"
+  },
+  btnmargin: {
+    marginTop: 20
   }
 });
 
