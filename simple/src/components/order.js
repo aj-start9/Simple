@@ -61,6 +61,10 @@ class Order extends Component {
 
 
     rowExpandHandler = (order) => {
+     
+
+        (!this.state.rowexpand)?this.setState({ rowexpand: true }):this.setState({ rowexpand: false });
+
         // if (!this.state.rowexpand) {
         //     this.setState({ rowexpand: true })
         // }
@@ -150,7 +154,7 @@ class Order extends Component {
                     </td>
                 </tr>
 
-                {((this.state.rowid === order.id)) ? (<tr>
+                {((this.state.rowid === order.id) && (this.state.rowexpand)) ? (<tr>
                     <td colSpan="2" style={{ borderTop: "none" }}>
                         <img style={{ width: "500px", height: "500px" }} src={order.image} />
                     </td>
@@ -173,7 +177,7 @@ class Order extends Component {
                         </div>
                     </td>
                 </tr>) : null}
-                {((this.state.rowid === order.id)) ? (<tr>
+                {((this.state.rowid === order.id) && this.state.rowexpand) ? (<tr>
                     <td colspan="4" style={{ borderTop: "none" }}>
                         <List addmedicine={(list) => this.addmedicine(order, list)} />
                     </td>
