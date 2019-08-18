@@ -1,4 +1,0 @@
-#Fri Jul 19 19:12:24 IST 2019
-base.0=/home/anub/Desktop/onlyreactnavigation/android/app/build/intermediates/transforms/dexMerger/debug/0
-renamed.0=classes.dex
-path.0=classes.dex

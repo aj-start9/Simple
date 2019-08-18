@@ -19,7 +19,7 @@ class Order extends Component {
         this.state = {
             orders: [],
             rowid: null,
-            rowexpand: false
+            rowexpand: true
 
 
         }
@@ -63,7 +63,7 @@ class Order extends Component {
     rowExpandHandler = (order) => {
      
 
-        (!this.state.rowexpand)?this.setState({ rowexpand: true }):this.setState({ rowexpand: false });
+        // (!this.state.rowexpand)?this.setState({ rowexpand: true }):this.setState({ rowexpand: false });
 
         // if (!this.state.rowexpand) {
         //     this.setState({ rowexpand: true })

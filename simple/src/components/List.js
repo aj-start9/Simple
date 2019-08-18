@@ -9,9 +9,10 @@ class List extends Component {
             mname: '',
             mrq: '',
             maq: '',
-            price: '',
-            total: ''
-        }
+            price: 5,
+            total: null
+        },
+        ctotal: null
     }
 
 
@@ -35,7 +36,9 @@ class List extends Component {
         this.setState({
             data: {
                 ...this.state.data,
-                maq: e.target.value
+                maq: e.target.value,
+                //how to use state key value in this.setstate
+                total: parseInt(e.target.value) * this.state.data.price
             }
         })
     }
@@ -128,11 +131,11 @@ class List extends Component {
                         </div>
                         <div class="col-md-2">
                             <label for="validationCustom02">Medicine required Quantity</label>
-                            <input type="text" class="form-control" 
-                            value={this.state.data.mrq}
-                             onChange={(e) => this.mrqchangeHandler(e)}
-                              id="validationCustom02" 
-                              placeholder="Medicine required Quantity" required />
+                            <input type="text" class="form-control"
+                                value={this.state.data.mrq}
+                                onChange={(e) => this.mrqchangeHandler(e)}
+                                id="validationCustom02"
+                                placeholder="Medicine required Quantity" required />
                             <div class="valid-feedback">
                                 Looks good!
                            </div>
@@ -146,14 +149,14 @@ class List extends Component {
                         </div>
                         <div class="col-md-2">
                             <label for="validationCustom02">Price Per Unit</label>
-                            <input type="text" class="form-control" value={this.state.data.price} onChange={(e) => this.pricechangeHandler(e)} id="validationCustom02" placeholder="Price Per Unit" required />
+                            <input type="text" class="form-control" value={this.state.data.price} onChange={(e) => this.pricechangeHandler(e)} id="validationCustom02" placeholder="Price Per Unit" required readOnly />
                             <div class="valid-feedback">
                                 Looks good!
                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="validationCustom02">Total</label>
-                            <input type="text" class="form-control"  value={this.state.data.total} onChange={(e) => this.totalchangeHandler(e)} id="validationCustom02" placeholder="Total" readonly/>
+                            <input type="text" class="form-control" value={(this.state.data.maq) * (this.state.data.price)} onChange={(e) => this.totalchangeHandler(e)} id="validationCustom02" placeholder="Total" readOnly />
                             <div class="valid-feedback">
                                 Looks good!
                            </div>

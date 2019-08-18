@@ -1,4 +1,0 @@
-#Wed Jul 10 10:45:53 IST 2019
-base.0=/home/anub/Desktop/firebase_pract/android/app/build/intermediates/transforms/dexMerger/debug/0
-renamed.0=classes.dex
-path.0=classes.dex
