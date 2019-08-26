@@ -24,28 +24,28 @@ class Order extends Component {
 
         }
         this.itemsRef = firebase1.database().ref('users')
-        this.itemsRef.on('value', data => {
-            const fetchedorders = [];
-            console.log(data.val());
-            // console.log(data.val()['-LjzhjgJJr1-YbIeAzon']['medicineList'])
-            for (let key in data.val()) {
-                fetchedorders.push({
-                    ...data.val()[key],
-                    id: key
-                })
-            }
-            this.setState({
-                orders: fetchedorders
-            })
-        })
+        // this.itemsRef.on('value', data => {
+        //     const fetchedorders = [];
+        //     console.log(data.val());
+        //     // console.log(data.val()['-LjzhjgJJr1-YbIeAzon']['medicineList'])
+        //     for (let key in data.val()) {
+        //         fetchedorders.push({
+        //             ...data.val()[key],
+        //             id: key
+        //         })
+        //     }
+        //     this.setState({
+        //         orders: fetchedorders
+        //     })
+        // })
     }
 
 
     componentDidMount() {
         console.log(this.props.token)
-        Axios.get('https://simple-30744.firebaseio.com/users.json?auth=' + localStorage.getItem('token'))
+        Axios.get('https://simple-30744.firebaseio.com/users.json?orderBy="name"&equalTo="Vgvg"')
             .then(res => {
-                console.log(res.data);
+                console.log(Object.keys(res.data)[0]);
                 const fetchedorders = [];
                 for (let key in res.data) {
                     fetchedorders.push({
