@@ -18,7 +18,7 @@ class Order extends Component {
         super(props)
         this.state = {
             orders: [],
-            rowid: null,
+            rowid: '-Lk3oTuV61rzwtjvzdUy',
             rowexpand: true
 
 
@@ -43,7 +43,7 @@ class Order extends Component {
 
     componentDidMount() {
         console.log(this.props.token)
-        Axios.get('https://simple-30744.firebaseio.com/users.json?orderBy="name"&equalTo="Vgvg"')
+        Axios.get('https://simple-30744.firebaseio.com/users.json')
             .then(res => {
                 console.log(Object.keys(res.data)[0]);
                 const fetchedorders = [];
@@ -53,15 +53,22 @@ class Order extends Component {
                         id: key
                     })
                 }
-                this.setState({ orders: fetchedorders })
+                // this.setState({ orders: fetchedorders })
                 console.log(this.state.orders)
             })
             .catch(err => alert('No Valid Token'));
     }
 
 
+
+    componentDidUpdate(){
+        console.log('order')
+        console.log(this.props.test)
+    }
+
+
     rowExpandHandler = (order) => {
-     
+
 
         // (!this.state.rowexpand)?this.setState({ rowexpand: true }):this.setState({ rowexpand: false });
 
@@ -72,6 +79,7 @@ class Order extends Component {
         //     this.setState({ rowexpand: false })
         // }
         this.setState({ rowid: order.id })
+        this.props.onAuthState(order.id);
     }
 
     removeorders = (e, order) => {
@@ -154,7 +162,7 @@ class Order extends Component {
                     </td>
                 </tr>
 
-                {((this.state.rowid === order.id) && (this.state.rowexpand)) ? (<tr>
+                {((this.state.rowid === order.id) && this.state.rowexpand) ? (<tr>
                     <td colSpan="2" style={{ borderTop: "none" }}>
                         <img style={{ width: "500px", height: "500px" }} src={order.image} />
                     </td>
@@ -218,14 +226,14 @@ class Order extends Component {
 
 const mapStateToProps = state => {
     return {
-        token: state.token
+        token: state.token,
+        test:state.change
     }
 }
 
-
-
-
-
-
-
-export default connect(mapStateToProps)(Order);
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuthState: ((value) => dispatch({ type: 'change', value: value }))
+  };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(Order);

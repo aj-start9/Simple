@@ -1,5 +1,7 @@
 const initialState = {
-    token: null
+    token: null,
+    change: ''
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +17,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.value
+            };
+        case 'change':
+            return {
+                ...state,
+                change: action.value
             };
         default:
             return state;

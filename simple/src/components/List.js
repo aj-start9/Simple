@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { connect } from 'react-redux';
 
 class List extends Component {
     state = {
@@ -13,6 +14,15 @@ class List extends Component {
             total: null
         },
         ctotal: null
+    }
+
+    componentDidMount() {
+        console.log('123456799s')
+    }
+
+    componentDidUpdate() {
+        console.log('List')
+        console.log(this.props.test)
     }
 
 
@@ -31,6 +41,7 @@ class List extends Component {
                 mrq: e.target.value
             }
         })
+        this.props.onAuthState(e.target.value)
     }
     maqchangeHandler = (e) => {
         this.setState({
@@ -175,5 +186,18 @@ class List extends Component {
 }
 
 
-export default List;
+const mapStateToProps = state => {
+    return {
+        test: state.change
+    }
+}
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthState: ((value) => dispatch({ type: 'change', value: value }))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);
 
